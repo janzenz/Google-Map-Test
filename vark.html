@@ -1,0 +1,48 @@
+<head>
+  <title>Todo List</title>
+</head>
+ 
+<body>
+  <div class="container">
+	{{> search}}
+  </div>
+</body>
+
+<template name="search">
+	<div class="map-container">
+	  {{> googleMap index="mapOptions" name="map" options=mapOptions}}
+	</div>
+	
+	{{#unless currentUser}}
+	<div class="sign-in">
+		{{> loginButtons}}	
+	</div>
+	{{/unless}}
+
+	{{#if currentUser}}
+	<div>
+    	{{> esInput index="locations" class="search" placeholder="Search..." }}
+	</div>
+	{{/if}}
+
+    <ul>
+        {{#esEach index="locations"}}
+            <li>
+            	<a class="location" href="#">
+            		{{name}} ({{slots}})
+            		<span class="arrow">&gt;</span>
+            	</a>
+            </li>
+        {{/esEach}}
+    </ul>
+	
+    {{> esLoadMoreButton index="locations"}}
+
+    {{#ifEsHasNoResults index="locations"}}
+        <div class="no-results">No results found!</div>
+    {{/ifEsHasNoResults}}
+
+    {{#ifEsIsSearching index="locations"}}
+            <div>Loading...</div>
+    {{/ifEsIsSearching}}
+</template>
